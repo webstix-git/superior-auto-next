@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
@@ -8,12 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock
-} from "lucide-react";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { z } from "zod";
 const insideBanner = "/inside-banner.jpg";
 const logo = "/logo.gif";
@@ -22,7 +17,7 @@ const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
   email: z.string().trim().email("Please enter a valid email address").max(255, "Email must be less than 255 characters"),
   phone: z.string().trim().min(1, "Phone number is required").max(20, "Phone number is too long"),
-  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters")
+  message: z.string().trim().min(1, "Message is required").max(1000, "Message must be less than 1000 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -32,15 +27,19 @@ export default function ContactPage() {
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof ContactFormData, string>>
+  >({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof ContactFormData]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
@@ -55,7 +54,7 @@ export default function ContactPage() {
       e.preventDefault(); // Only prevent default if validation fails
       if (error instanceof z.ZodError) {
         const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
-        error.errors.forEach(err => {
+        error.errors.forEach((err) => {
           if (err.path[0]) {
             fieldErrors[err.path[0] as keyof ContactFormData] = err.message;
           }
@@ -69,16 +68,14 @@ export default function ContactPage() {
     <Layout>
       {/* Hero Section */}
       <section className="relative bg-charcoal text-card py-20">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${insideBanner})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 via-40% to-transparent to-60%" />
-        
+
         <div className="container relative">
-          <h1 className="text-4xl md:text-5xl font-bold">
-            Contact
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold">Contact</h1>
         </div>
       </section>
 
@@ -92,7 +89,8 @@ export default function ContactPage() {
             <Card className="border shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground mb-6">
-                  Fields marked with an asterisk (<span className="text-destructive">*</span>) are required.
+                  Fields marked with an asterisk (
+                  <span className="text-destructive">*</span>) are required.
                 </p>
                 <form
                   method="POST"
@@ -178,31 +176,31 @@ export default function ContactPage() {
             <div className="space-y-8">
               {/* Logo and Contact Info */}
               <div>
-                <img 
-                  src={logo} 
-                  alt="Superior Auto Body" 
-                  className="h-24 mb-6"
-                />
-                
+                <img src={logo} alt="Superior Auto Body" className="h-24 mb-6" />
+
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
                     <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                     <p className="text-base">
-                      301 North Farwell St.<br />
+                      301 North Farwell St.
+                      <br />
                       Eau Claire, WI 54703
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5 text-primary flex-shrink-0" />
                     <a href="tel:715-834-7707" className="text-base hover:text-primary">
                       715-834-7707
                     </a>
                   </div>
-                  
+
                   <div className="flex items-center gap-3">
                     <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                    <a href="mailto:office@superiorautobodyinc.com" className="text-base hover:text-primary">
+                    <a
+                      href="mailto:office@superiorautobodyinc.com"
+                      className="text-base hover:text-primary"
+                    >
                       office@superiorautobodyinc.com
                     </a>
                   </div>
@@ -229,3 +227,4 @@ export default function ContactPage() {
     </Layout>
   );
 }
+
