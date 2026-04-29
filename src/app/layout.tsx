@@ -5,6 +5,10 @@ import { Providers } from "@/components/Providers";
 export const metadata: Metadata = {
   title: "Superior Auto Body",
   description: "Superior collision repair you can trust.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    title: "Superior Auto Body",
+  },
 };
 
 export default function RootLayout({
