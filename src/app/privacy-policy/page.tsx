@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/PageHeader";
+import { Layout } from "@/components/Layout";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
+
+const insideBanner = "/inside-banner.jpg";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Superior Auto Body",
@@ -10,8 +13,22 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <main>
-      <PageHeader title="Privacy Policy" />
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative bg-charcoal text-card py-20">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${insideBanner})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 via-40% to-transparent to-60%" />
+
+        <div className="container relative">
+          <h1 className="text-4xl md:text-5xl font-bold">Privacy Policy</h1>
+        </div>
+      </section>
+
+      <PageBreadcrumb currentPage="Privacy Policy" />
+
       <section className="container py-12 md:py-16">
         <div className="max-w-3xl mx-auto prose prose-lg">
           <p className="text-muted-foreground mb-6">
@@ -134,6 +151,6 @@ export default function PrivacyPolicyPage() {
           </p>
         </div>
       </section>
-    </main>
+    </Layout>
   );
 }

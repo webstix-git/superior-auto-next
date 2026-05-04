@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHeader } from "@/components/PageHeader";
+import { Layout } from "@/components/Layout";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
+
+const insideBanner = "/inside-banner.jpg";
 
 export const metadata: Metadata = {
   title: "Sitemap | Superior Auto Body",
@@ -21,8 +24,22 @@ const siteLinks = [
 
 export default function SitemapPage() {
   return (
-    <main>
-      <PageHeader title="Sitemap" />
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative bg-charcoal text-card py-20">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${insideBanner})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 via-40% to-transparent to-60%" />
+
+        <div className="container relative">
+          <h1 className="text-4xl md:text-5xl font-bold">Sitemap</h1>
+        </div>
+      </section>
+
+      <PageBreadcrumb currentPage="Sitemap" />
+
       <section className="container py-12 md:py-16">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl font-semibold mb-6 text-charcoal">
@@ -64,6 +81,6 @@ export default function SitemapPage() {
           </ul>
         </div>
       </section>
-    </main>
+    </Layout>
   );
 }
