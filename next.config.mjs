@@ -18,6 +18,12 @@ const nextConfig = {
         statusCode: 301,   // true = 301, false = 302
       },
 
+      {
+        source: '/faq.php',
+        destination: '/faq',
+        statusCode: 301,   // true = 301, false = 302
+      },
+
 
     ]
   },
