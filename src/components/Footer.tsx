@@ -130,10 +130,26 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-muted mt-8 pt-4 pb-2 flex justify-center">
+        <div className="border-t border-muted mt-8 pt-4 pb-2 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0">
           <p className="text-base text-[#1F1F1F]">
             © {new Date().getFullYear()} Superior Auto Body. All rights reserved.
           </p>
+          <span className="hidden sm:inline text-[#1F1F1F] mx-2">|</span>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/privacy-policy"
+              className="text-base text-[#1F1F1F] hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <span className="text-[#1F1F1F]">|</span>
+            <Link
+              href="/sitemap-page"
+              className="text-base text-[#1F1F1F] hover:text-primary transition-colors"
+            >
+              Sitemap
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
