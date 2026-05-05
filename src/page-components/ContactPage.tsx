@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { Layout } from "@/components/Layout";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,9 @@ export default function ContactPage() {
   const [errors, setErrors] = useState<
     Partial<Record<keyof ContactFormData, string>>
   >({});
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -45,13 +49,13 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     // Validate before allowing native form submission
+    let hasErrors = false;
+    
     try {
       contactSchema.parse(formData);
       setErrors({});
-      // Validation passed — allow the native form submission to proceed
-      // The browser will POST to the action URL and redirect to the service's Thank You page
     } catch (error) {
-      e.preventDefault(); // Only prevent default if validation fails
+      hasErrors = true;
       if (error instanceof z.ZodError) {
         const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
         error.errors.forEach((err) => {
@@ -62,6 +66,20 @@ export default function ContactPage() {
         setErrors(fieldErrors);
       }
     }
+    
+    // Validate captcha
+    if (!captchaToken) {
+      hasErrors = true;
+      setCaptchaError("Please complete the captcha verification");
+    } else {
+      setCaptchaError(null);
+    }
+    
+    if (hasErrors) {
+      e.preventDefault(); // Only prevent default if validation fails
+    }
+    // Validation passed — allow the native form submission to proceed
+    // The browser will POST to the action URL and redirect to the service's Thank You page
   };
 
   return (
@@ -162,6 +180,36 @@ export default function ContactPage() {
                     />
                     {errors.message && (
                       <p className="text-base text-destructive mt-1">{errors.message}</p>
+                    )}
+                  </div>
+
+                  {/* Hidden input to send captcha token with form */}
+                  <input
+                    type="hidden"
+                    name="cf-turnstile-response"
+                    value={captchaToken || ""}
+                  />
+
+                  {/* Cloudflare Turnstile Captcha */}
+                  <div>
+                    <Turnstile
+                      ref={turnstileRef}
+                      siteKey="0x4AAAAAACmutPDloFLjJ8s_"
+                      onSuccess={(token) => {
+                        setCaptchaToken(token);
+                        setCaptchaError(null);
+                      }}
+                      onError={() => {
+                        setCaptchaToken(null);
+                        setCaptchaError("Captcha verification failed. Please try again.");
+                      }}
+                      onExpire={() => {
+                        setCaptchaToken(null);
+                        setCaptchaError("Captcha expired. Please verify again.");
+                      }}
+                    />
+                    {captchaError && (
+                      <p className="text-base text-destructive mt-1">{captchaError}</p>
                     )}
                   </div>
 
