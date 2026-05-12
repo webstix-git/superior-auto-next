@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { Phone, Mail, MapPin, Clock, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const logo = "/logo.gif";
@@ -152,6 +153,30 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      {/* The Trade Desk Conversion Tracking */}
+      <Script
+        src="https://js.adsrvr.org/up_loader.3.0.0.js"
+        strategy="afterInteractive"
+      />
+      <Script id="ttd-conversion-events" strategy="afterInteractive">
+        {`
+          window.ttdConversionEventsLayer = window.ttdConversionEventsLayer || [];
+          function ttdConversionEvents() {
+            window.ttdConversionEventsLayer.push(arguments);
+          }
+          
+          ttdConversionEvents("init", {
+            advertiserId: "43lof4d",
+            pixelIds: ["mfapllr"]
+          });
+
+          ttdConversionEvents("event", {
+            advertiserId: "43lof4d",
+            pixelIds: ["mfapllr"]
+          });
+        `}
+      </Script>
     </footer>
   );
 }
