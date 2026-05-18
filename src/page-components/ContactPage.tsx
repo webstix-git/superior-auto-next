@@ -35,6 +35,11 @@ export default function ContactPage() {
   >({});
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
   const turnstileRef = useRef<TurnstileInstance>(null);
 
   const handleChange = (
@@ -47,15 +52,15 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // Validate before allowing native form submission
-    let hasErrors = false;
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitStatus(null);
     
+    // Validate form data
     try {
       contactSchema.parse(formData);
       setErrors({});
     } catch (error) {
-      hasErrors = true;
       if (error instanceof z.ZodError) {
         const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
         error.errors.forEach((err) => {
@@ -65,21 +70,62 @@ export default function ContactPage() {
         });
         setErrors(fieldErrors);
       }
+      return;
     }
     
     // Validate captcha
     if (!captchaToken) {
-      hasErrors = true;
       setCaptchaError("Please complete the captcha verification");
-    } else {
-      setCaptchaError(null);
+      return;
     }
+    setCaptchaError(null);
     
-    if (hasErrors) {
-      e.preventDefault(); // Only prevent default if validation fails
+    // Submit to API route for server-side verification
+    setIsSubmitting(true);
+    
+    try {
+      const submitData = new FormData();
+      submitData.append("name", formData.name);
+      submitData.append("email", formData.email);
+      submitData.append("phone", formData.phone);
+      submitData.append("message", formData.message);
+      submitData.append("cf-turnstile-response", captchaToken);
+      
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: submitData,
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        setSubmitStatus({
+          type: "success",
+          message: "Thank you! Your message has been sent successfully.",
+        });
+        // Reset form
+        setFormData({ name: "", email: "", phone: "", message: "" });
+        setCaptchaToken(null);
+        turnstileRef.current?.reset();
+      } else {
+        setSubmitStatus({
+          type: "error",
+          message: result.error || "Failed to submit form. Please try again.",
+        });
+        // Reset captcha on error
+        setCaptchaToken(null);
+        turnstileRef.current?.reset();
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: "An unexpected error occurred. Please try again.",
+      });
+      setCaptchaToken(null);
+      turnstileRef.current?.reset();
+    } finally {
+      setIsSubmitting(false);
     }
-    // Validation passed — allow the native form submission to proceed
-    // The browser will POST to the action URL and redirect to the service's Thank You page
   };
 
   return (
@@ -110,9 +156,19 @@ export default function ContactPage() {
                   Fields marked with an asterisk (
                   <span className="text-destructive">*</span>) are required.
                 </p>
+                {/* Success/Error Message */}
+                {submitStatus && (
+                  <div
+                    className={`p-4 rounded-lg mb-4 ${
+                      submitStatus.type === "success"
+                        ? "bg-green-50 text-green-800 border border-green-200"
+                        : "bg-red-50 text-red-800 border border-red-200"
+                    }`}
+                  >
+                    {submitStatus.message}
+                  </div>
+                )}
                 <form
-                  method="POST"
-                  action="https://ywwxvriolxwuqcwjaluh.supabase.co/functions/v1/form-submit/71df9957-4b08-4b67-8cc9-ea6586693e5d"
                   onSubmit={handleSubmit}
                   className="space-y-5"
                 >
@@ -183,13 +239,6 @@ export default function ContactPage() {
                     )}
                   </div>
 
-                  {/* Hidden input to send captcha token with form */}
-                  <input
-                    type="hidden"
-                    name="cf-turnstile-response"
-                    value={captchaToken || ""}
-                  />
-
                   {/* Cloudflare Turnstile Captcha */}
                   <div>
                     <Turnstile
@@ -213,8 +262,8 @@ export default function ContactPage() {
                     )}
                   </div>
 
-                  <Button type="submit" size="lg">
-                    Send
+                  <Button type="submit" size="lg" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Send"}
                   </Button>
                 </form>
               </CardContent>
