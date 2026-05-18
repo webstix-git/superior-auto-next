@@ -58,13 +58,23 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Log the data being sent for debugging
+    console.log("[v0] Forwarding form data to Supabase:");
+    forwardData.forEach((value, key) => {
+      console.log(`[v0] ${key}: ${value}`);
+    });
+
     const supabaseResponse = await fetch(SUPABASE_FORM_URL, {
       method: "POST",
       body: forwardData,
     });
 
+    const supabaseResponseText = await supabaseResponse.text();
+    console.log("[v0] Supabase response status:", supabaseResponse.status);
+    console.log("[v0] Supabase response body:", supabaseResponseText);
+
     if (!supabaseResponse.ok) {
-      console.error("Supabase form submission failed:", await supabaseResponse.text());
+      console.error("Supabase form submission failed:", supabaseResponseText);
       return NextResponse.json(
         { error: "Failed to submit form. Please try again." },
         { status: 500 }
