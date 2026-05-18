@@ -99,14 +99,9 @@ export default function ContactPage() {
       const result = await response.json();
       
       if (response.ok) {
-        setSubmitStatus({
-          type: "success",
-          message: "Thank you! Your message has been sent successfully.",
-        });
-        // Reset form
-        setFormData({ name: "", email: "", phone: "", message: "" });
-        setCaptchaToken(null);
-        turnstileRef.current?.reset();
+        // Redirect to thank you page on success
+        window.location.href = "https://www.superiorautobodyinc.com/thank-you";
+        return;
       } else {
         setSubmitStatus({
           type: "error",
