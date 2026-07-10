@@ -37,6 +37,7 @@ const galleryVehiclesLineup = "/gallery-vehicles-lineup.jpg";
 const galleryShopWide = "/gallery-shop-wide.jpg";
 const galleryTrucksShop = "/gallery-trucks-shop.jpg";
 const galleryToyotaShop = "/gallery-toyota-shop.jpg";
+const galleryWeldingEquipment = "/gallery-welding-equipment.jpg";
 
 interface GalleryImage {
   src: string;
@@ -73,7 +74,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     src: galleryShop,
-    alt: "Vehicle on lift in shop",
+    alt: "Car-O-Liner frame alignment and diagnostic equipment",
     caption: "State-of-the-art repair equipment",
   },
   {
@@ -103,7 +104,7 @@ const galleryImages: GalleryImage[] = [
   },
   {
     src: teamGroupPhoto,
-    alt: "Superior Auto Body team",
+    alt: "Superior Auto Body family at the shop entrance",
     caption: "The Superior Auto Body family",
   },
   {
@@ -140,6 +141,11 @@ const galleryImages: GalleryImage[] = [
     src: galleryToyotaShop,
     alt: "Toyota in repair bay",
     caption: "All makes and models serviced",
+  },
+  {
+    src: galleryWeldingEquipment,
+    alt: "Professional welding and repair equipment",
+    caption: "Professional-grade welding and repair tools",
   },
 ];
 
@@ -268,10 +274,10 @@ export default function GalleryPage() {
 
       {/* Lightbox Dialog */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden">
+        <DialogContent className="max-w-4xl max-h-[calc(100vh-4rem)] border-0 bg-transparent p-0 shadow-none [&>button.rounded-sm]:hidden">
           <DialogTitle className="sr-only">{selectedImage?.alt}</DialogTitle>
           <DialogDescription className="sr-only">
-            {selectedImage?.caption}
+            {selectedImage?.alt}
           </DialogDescription>
           <button
             onClick={() => setSelectedImage(null)}
@@ -280,38 +286,36 @@ export default function GalleryPage() {
             <X className="h-5 w-5" />
           </button>
 
-          {/* Previous Arrow */}
-          {currentIndex > 0 && (
-            <button
-              onClick={goToPrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-charcoal/50 text-white p-2 rounded-full hover:bg-charcoal/70 transition-colors"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-          )}
-
-          {/* Next Arrow */}
-          {currentIndex < galleryImages.length - 1 && (
-            <button
-              onClick={goToNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-charcoal/50 text-white p-2 rounded-full hover:bg-charcoal/70 transition-colors"
-              aria-label="Next image"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-          )}
-
           {selectedImage && (
-            <div>
+            <div className="flex items-center justify-center gap-3 py-4">
+              <div className="flex w-10 shrink-0 justify-end">
+                {currentIndex > 0 && (
+                  <button
+                    onClick={goToPrevious}
+                    className="rounded-full bg-charcoal/50 p-2 text-white transition-colors hover:bg-charcoal/70"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                )}
+              </div>
+
               <img
                 src={selectedImage.src}
                 alt={selectedImage.alt}
-                className="w-full h-auto"
+                className="block max-h-[calc(100vh-8rem)] h-auto max-w-full object-contain"
               />
-              <div className="p-4 bg-card">
-                <p className="text-lg font-medium">{selectedImage.alt}</p>
-                <p className="text-muted-foreground">{selectedImage.caption}</p>
+
+              <div className="flex w-10 shrink-0 justify-start">
+                {currentIndex < galleryImages.length - 1 && (
+                  <button
+                    onClick={goToNext}
+                    className="rounded-full bg-charcoal/50 p-2 text-white transition-colors hover:bg-charcoal/70"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                )}
               </div>
             </div>
           )}
