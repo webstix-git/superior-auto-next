@@ -14,7 +14,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 const teamGroupPhoto = "/team-group-photo-new.jpg";
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 const whyChooseUs = "/why-choose-us-new.jpg";
 
 const coreValues = [

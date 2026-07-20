@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { z } from "zod";
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 const logo = "/logo.gif";
 
 const contactSchema = z.object({

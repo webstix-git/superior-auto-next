@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 const ctaBg = "/cta-bg.jpg";
 
 const faqCategories = [

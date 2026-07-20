@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Layout } from "@/components/Layout";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Superior Auto Body",

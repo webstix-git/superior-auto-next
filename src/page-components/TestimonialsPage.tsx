@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Quote } from "lucide-react";
 import Link from "next/link";
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 const ctaBg = "/cta-bg.jpg";
 
 const testimonials = [

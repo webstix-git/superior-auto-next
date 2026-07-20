@@ -40,7 +40,7 @@ const routes: Record<
     title: `About Us | ${SITE_NAME}`,
     description:
       "Learn about Superior Auto Body—serving the Chippewa Valley since 1971 with trusted collision repair, certified technicians, and a commitment to quality.",
-    ogImagePath: "/inside-banner.jpg",
+    ogImagePath: "/inside-header-banner.jpeg",
   },
   services: {
     path: "/services",
@@ -68,7 +68,7 @@ const routes: Record<
     title: `FAQ | ${SITE_NAME}`,
     description:
       "Answers to common questions about insurance, estimates, repair timelines, parts, warranties, and our collision repair process.",
-    ogImagePath: "/inside-banner.jpg",
+    ogImagePath: "/inside-header-banner.jpeg",
   },
   contact: {
     path: "/contact",

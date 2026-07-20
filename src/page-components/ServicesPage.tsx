@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Wrench, Moon, Leaf, CheckCircle, ArrowRight } from "lucide-react";
 const collisionRepairServices = "/collision-repair-services.jpg";
 const servicesShopInterior = "/services-shop-interior.jpg";
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 const ctaBg = "/cta-bg.jpg";
 const nightDropOff = "/night-drop-off.jpg";
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Layout } from "@/components/Layout";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 
 export const metadata: Metadata = {
   title: "Sitemap | Superior Auto Body",

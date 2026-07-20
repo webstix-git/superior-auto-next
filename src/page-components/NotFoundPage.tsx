@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Layout } from "@/components/Layout";
 import { Search } from "lucide-react";
 
-const insideBanner = "/inside-banner.jpg";
+const insideBanner = "/inside-header-banner.jpeg";
 
 const siteLinks = [
   { name: "Home", path: "/" },
